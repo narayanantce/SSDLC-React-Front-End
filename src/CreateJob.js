@@ -5,6 +5,7 @@ import Select from 'react-select';
 import {SKILLS} from './Dropdowns'
 
 import {css} from "aphrodite";
+import {Redirect} from "react-router-dom";
 
 class CreateJob extends Component {
 
@@ -20,6 +21,8 @@ class CreateJob extends Component {
             salaryRange: '',
             title: '',
             operation: '',
+            userid: '',
+            redirect: false,
         };
 
         this.handleSkillChange = this.handleSkillChange.bind(this);
@@ -38,6 +41,14 @@ class CreateJob extends Component {
 
     }
 
+    componentWillMount() {
+        let token = sessionStorage.getItem('AUTH_TOKEN'); 
+        console.log(token);
+        if(token != undefined) {
+            this.setState({redirect:true})   
+        }
+    }
+
     componentDidMount() {
         this.setState({skills: SKILLS});
         if(this.props.operation != undefined) {
@@ -53,6 +64,7 @@ class CreateJob extends Component {
 
         this.setState({skills_selected: skills_selected_json});
         console.log(this.state)
+        console.log(sessionStorage);
      }
 
      submitJob() {
@@ -82,6 +94,14 @@ class CreateJob extends Component {
      }
     render() {
 
+        
+        if (this.state.redirect === false) {
+            return(
+                <Redirect to = "/"/>
+            )
+        }
+        else {
+
         return (
           
             <div className={"col-12 " +css(Styles.div)}>
@@ -108,6 +128,9 @@ class CreateJob extends Component {
 
             </div>
          );
+
+
+        }
     }
 }
 

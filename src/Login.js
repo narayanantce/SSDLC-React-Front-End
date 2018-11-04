@@ -53,10 +53,12 @@ class Login extends Component {
         console.log(response.status);
         console.log(responsejson);
 
-        let userid = responsejson.user.ID;
-        console.log(userid);
-
         if (response.status == 200) {
+            let userid = responsejson.user.ID;
+            let token = responsejson.token;
+
+            console.log(userid);
+            sessionStorage.setItem('AUTH_TOKEN', "Bearer "+token);
             alert("Logged In successfully");
             this.setState({redirect:true})
         } 
@@ -72,15 +74,12 @@ class Login extends Component {
             this.setState({error: "Access Denied"});
             this.setState({formError: css(Styles.formError)});
         }
-        //const responseData; 
-        // =  await login(this.state.email,this.state.password)
-        // if(responseData instanceof Error === false) {
-        //     window.location.reload()
-        // } else {
-        //     e.preventDefault()
-        //     this.setState({formError: css(LoginStyles.formError)});
-        // }
+        else {
+            e.preventDefault();
 
+            this.setState({error: "Unexpected failure"});
+            this.setState({formError: css(Styles.formError)});
+        }
     } else {
         e.preventDefault();
         this.setState({formError: css(Styles.formError)});
@@ -90,7 +89,6 @@ class Login extends Component {
        
 }
 
-    
     render() {
 
         if (this.state.redirect === true) {
