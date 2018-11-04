@@ -36,8 +36,8 @@ class Login extends Component {
     const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     let validateEmail = emailRegex.test(String(this.state.email).toLowerCase());
     
-    var bcrypt = require('bcryptjs');
-    var hash = bcrypt.hashSync(this.state.password, 8);
+    //var bcrypt = require('bcryptjs');
+    //var hash = bcrypt.hashSync(this.state.password, 8);
 
     if (validateEmail && this.state.password != "") {
         e.preventDefault();
@@ -49,7 +49,7 @@ class Login extends Component {
             },
             body : JSON.stringify({ 
                 "email": this.state.email,
-                "password": hash,
+                "password": this.state.password,
             })
         });
 

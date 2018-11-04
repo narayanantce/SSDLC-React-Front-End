@@ -6,6 +6,7 @@ import {SKILLS} from './Dropdowns'
 
 import {css} from "aphrodite";
 import {Redirect} from "react-router-dom";
+var jwtDecode = require('jwt-decode');
 
 class CreateJob extends Component {
 
@@ -48,7 +49,7 @@ class CreateJob extends Component {
         console.log(token);
         console.log(company);
         if(token && company != "null") {
-            alert("Setting redirect to true");
+            //alert("Setting redirect to true");
             this.setState({redirect:true})
         }
     }
@@ -71,28 +72,40 @@ class CreateJob extends Component {
         console.log(sessionStorage);
      }
 
-     submitJob() {
+     submitJob(e) {
+         console.log(this.state)
+         e.preventDefault();
+        let token = sessionStorage.getItem('AUTH_TOKEN');
 
-        alert("Inside submitjob");
+        var decoded =  jwtDecode(token);
+        console.log(decoded.ID);
+        console.log(token);
+        let employer_id = decoded.ID;
+
+        console.log(this.state);
+        console.log(employer_id);
         (async () => {
 
         const response = await fetch(URL + "/job/add", {           
             method: 'POST',
             headers: {
+                'Authorization' : token,
                 'Content-Type' : 'application/json'
             },
             body : {
-                "employer_id": '9',
+                "employer_id": employer_id,
                 "title": this.state.title,
                 "description": this.state.description,
                 "skills": this.state.skills_selected,
                 "experience": this.state.experience,
                 "location": this.state.location,
-                "salary_range": this.state.salaryRange,
+                "salary_range": this.state.salaryRange
             }
         });
 
-        console.log(response);
+
+        let responsejson = await response.json();
+        console.log(responsejson);
 
         })();
      }
