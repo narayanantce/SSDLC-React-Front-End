@@ -79,13 +79,13 @@ class Login extends Component {
         else {
             e.preventDefault();
 
-            this.setState({error: "Unexpected failure"});
+            this.setState({error: "Invalid user credentials"});
             this.setState({formError: css(Styles.formError)});
         }
         } else {
             e.preventDefault();
             this.setState({formError: css(Styles.formError)});
-            this.setState({error: 'Invalid credentials'})
+            this.setState({error: 'Invalid email/password'})
         }
     })();
        
