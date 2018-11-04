@@ -43,9 +43,13 @@ class CreateJob extends Component {
 
     componentWillMount() {
         let token = sessionStorage.getItem('AUTH_TOKEN'); 
+        let company = sessionStorage.getItem('COMPANY'); 
+
         console.log(token);
-        if(token != undefined) {
-            this.setState({redirect:true})   
+        console.log(company);
+        if(token && company != "null") {
+            alert("Setting redirect to true");
+            this.setState({redirect:true})
         }
     }
 
@@ -94,6 +98,7 @@ class CreateJob extends Component {
      }
     render() {
 
+        console.log(this.state);
         
         if (this.state.redirect === false) {
             return(
