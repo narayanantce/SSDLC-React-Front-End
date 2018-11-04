@@ -4,9 +4,9 @@ import { URL } from "./Constants";
 import Select from "react-select";
 import { SKILLS } from "./Dropdowns";
 import { withRouter } from "react-router";
-
 import { css } from "aphrodite";
 import { Redirect } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 class CreateJob extends Component {
   constructor(props) {
@@ -81,27 +81,41 @@ class CreateJob extends Component {
     console.log(sessionStorage);
   }
 
-  submitJob() {
-    alert("Inside submitjob");
+  submitJob(e) {
+    console.log(this.state);
+    e.preventDefault();
+    let token = sessionStorage.getItem("AUTH_TOKEN");
+
+    var decoded = jwtDecode(token);
+    console.log(decoded.ID);
+    console.log(token);
+    let employer_id = decoded.ID;
+
+    console.log(this.state);
+    console.log(employer_id);
     (async () => {
       const response = await fetch(URL + "/job/add", {
         method: "POST",
         headers: {
+          Authorization: token,
           "Content-Type": "application/json"
         },
         body: {
-          employer_id: "9",
+          employer_id: employer_id,
           title: this.state.title,
           description: this.state.description,
+          skills: this.state.skills_selected,
           experience: this.state.experience,
           location: this.state.location,
           salary_range: this.state.salaryRange
         }
       });
 
-      console.log(response);
+      let responsejson = await response.json();
+      console.log(responsejson);
     })();
   }
+
   render() {
     console.log(this.state);
 
@@ -120,7 +134,7 @@ class CreateJob extends Component {
               Description
               <input
                 className={css(Styles.input)}
-                value={this.state.description}
+                defaultValue={this.props.description}
                 autoFocus
                 onChange={this.onChange}
                 type="text"
@@ -131,7 +145,7 @@ class CreateJob extends Component {
               Title
               <input
                 className={css(Styles.input)}
-                value={this.state.title}
+                defaultValue={this.props.title}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. Software Engineer"
@@ -141,16 +155,16 @@ class CreateJob extends Component {
               Skills
               <Select
                 options={this.state.skills}
+                defaultValue={this.props.skills_selected}
                 id="skills_selected"
                 value={this.state.skills_selected}
                 onChange={this.handleSkillChange}
-                defaultValue="ITES"
               />
               <br /> <br />
               Experience (in years)
               <input
                 className={css(Styles.input)}
-                defaultValue={this.state.experience}
+                defaultValue={this.props.experience}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. 2"
@@ -160,7 +174,7 @@ class CreateJob extends Component {
               Location
               <input
                 className={css(Styles.input)}
-                defaultValue={this.state.location}
+                defaultValue={this.props.location}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. Singapore"
@@ -170,7 +184,7 @@ class CreateJob extends Component {
               Salary Range
               <input
                 className={css(Styles.input)}
-                defaultValue={this.state.salaryRange}
+                defaultValue={this.props.salaryRange}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. 4000-5000"

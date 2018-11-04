@@ -8,6 +8,8 @@
     "aphrodite": "^2.2.3",
     "axios": "^0.18.0",
     "prop-types": "^15.6.2",
+    "bcryptjs": "^2.4.3",
+    "jwt-decode": "^2.2.0",
     "react": "^16.6.0",
     "react-confirm-alert": "^2.0.6",
     "react-dom": "^16.6.0",

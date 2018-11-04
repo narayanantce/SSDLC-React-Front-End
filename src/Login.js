@@ -33,6 +33,9 @@ class Login extends Component {
         String(this.state.email).toLowerCase()
       );
 
+      //var bcrypt = require('bcryptjs');
+      //var hash = bcrypt.hashSync(this.state.password, 8);
+
       if (validateEmail && this.state.password != "") {
         e.preventDefault();
 
@@ -72,14 +75,13 @@ class Login extends Component {
           this.setState({ formError: css(Styles.formError) });
         } else {
           e.preventDefault();
-
-          this.setState({ error: "Unexpected failure" });
+          this.setState({ error: "Invalid user credentials" });
           this.setState({ formError: css(Styles.formError) });
         }
       } else {
         e.preventDefault();
         this.setState({ formError: css(Styles.formError) });
-        this.setState({ error: "Invalid credentials" });
+        this.setState({ error: "Invalid email/password" });
       }
     })();
   }
