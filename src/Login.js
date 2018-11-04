@@ -14,7 +14,8 @@ class Login extends Component {
       password: "",
       formError: "hidden",
       error: "",
-      redirect: false
+      redirect: false,
+      company: null
     };
 
     this.login = this.login.bind(this);
@@ -31,7 +32,7 @@ class Login extends Component {
       let validateEmail = emailRegex.test(
         String(this.state.email).toLowerCase()
       );
-      console.log(this.state);
+
       if (validateEmail && this.state.password != "") {
         e.preventDefault();
 
@@ -47,14 +48,17 @@ class Login extends Component {
         });
 
         let responsejson = await response.json();
-        console.log(response.status);
-        console.log(responsejson);
-
-        let userid = responsejson.user.ID;
-        console.log(userid);
 
         if (response.status == 200) {
+          let userid = responsejson.user.ID;
+          let token = responsejson.token;
+
+          sessionStorage.setItem("AUTH_TOKEN", "Bearer " + token);
+          sessionStorage.setItem("COMPANY", responsejson.user.COMPANY);
+
           alert("Logged In successfully");
+
+          this.setState({ company: responsejson.user.COMPANY });
           this.setState({ redirect: true });
         } else if (response.status == 500) {
           e.preventDefault();
@@ -66,15 +70,12 @@ class Login extends Component {
 
           this.setState({ error: "Access Denied" });
           this.setState({ formError: css(Styles.formError) });
+        } else {
+          e.preventDefault();
+
+          this.setState({ error: "Unexpected failure" });
+          this.setState({ formError: css(Styles.formError) });
         }
-        //const responseData;
-        // =  await login(this.state.email,this.state.password)
-        // if(responseData instanceof Error === false) {
-        //     window.location.reload()
-        // } else {
-        //     e.preventDefault()
-        //     this.setState({formError: css(LoginStyles.formError)});
-        // }
       } else {
         e.preventDefault();
         this.setState({ formError: css(Styles.formError) });
@@ -85,7 +86,11 @@ class Login extends Component {
 
   render() {
     if (this.state.redirect === true) {
-      return <Redirect to="/joblist" />;
+      if (this.state.company != null) {
+        return <Redirect to="/createjob" />;
+      } else {
+        return <Redirect to="/jobseeker" />;
+      }
     } else {
       return (
         <div className={"col-12 " + css(Styles.div)}>

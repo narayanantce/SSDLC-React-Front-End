@@ -60,7 +60,6 @@ class Login extends Component {
   componentWillMount() {}
 
   componentDidMount() {
-    console.log("componentdidmount");
     this.fetchjob();
   }
 
