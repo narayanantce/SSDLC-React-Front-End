@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "aphrodite": "^2.2.3",
+    "bcryptjs": "^2.4.3",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^4.3.1",
