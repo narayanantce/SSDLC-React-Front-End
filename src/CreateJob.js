@@ -134,7 +134,7 @@ class CreateJob extends Component {
               Description
               <input
                 className={css(Styles.input)}
-                defaultValue={this.props.description}
+                defaultValue={this.state.description}
                 autoFocus
                 onChange={this.onChange}
                 type="text"
@@ -145,7 +145,7 @@ class CreateJob extends Component {
               Title
               <input
                 className={css(Styles.input)}
-                defaultValue={this.props.title}
+                defaultValue={this.state.title}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. Software Engineer"
@@ -164,7 +164,7 @@ class CreateJob extends Component {
               Experience (in years)
               <input
                 className={css(Styles.input)}
-                defaultValue={this.props.experience}
+                defaultValue={this.state.experience}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. 2"
@@ -174,7 +174,7 @@ class CreateJob extends Component {
               Location
               <input
                 className={css(Styles.input)}
-                defaultValue={this.props.location}
+                defaultValue={this.state.location}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. Singapore"
@@ -184,7 +184,7 @@ class CreateJob extends Component {
               Salary Range
               <input
                 className={css(Styles.input)}
-                defaultValue={this.props.salaryRange}
+                defaultValue={this.state.salaryRange}
                 onChange={this.onChange}
                 type="text"
                 placeholder="eg. 4000-5000"
