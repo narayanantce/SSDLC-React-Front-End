@@ -1,10 +1,10 @@
 import {StyleSheet} from 'aphrodite'
 
 
-const LoginStyles = StyleSheet.create({
+const Styles = StyleSheet.create({
 
-    loginPanel: {
-        width:'350px',
+    Panel: {
+        width:'450px',
         margin: '50px auto',
         '@media only screen and (max-width : 768px)': {
             width:'95%',
@@ -76,4 +76,4 @@ const LoginStyles = StyleSheet.create({
     }
 });
 
-export {LoginStyles};
+export {Styles};
