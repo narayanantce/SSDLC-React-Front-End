@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { css } from "aphrodite";
 import { confirmAlert } from "react-confirm-alert";
+import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
-
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 import { Styles } from "./Styles";
@@ -11,7 +11,7 @@ import JobListTable from "./JobListTable";
 
 const url = "http://localhost:7007";
 
-class Login extends Component {
+class JobList extends Component {
   constructor(props) {
     super(props);
 
@@ -19,7 +19,7 @@ class Login extends Component {
       {
         ID: 1,
         EMPLOYER_ID: 1,
-        TITLE: "JOB 1",
+        TITLE: "DUMMY JOB 1",
         DESCRIPTION: "JOB 1 DESCRIPTION",
         SKILLS: "SKILLS",
         EXPERIENCE: "EXP",
@@ -29,7 +29,7 @@ class Login extends Component {
       {
         ID: 2,
         EMPLOYER_ID: 1,
-        TITLE: "JOB 2",
+        TITLE: "DUMMY JOB 2",
         DESCRIPTION: "JOB 2 DESCRIPTION",
         SKILLS: "SKILLS",
         EXPERIENCE: "EXP",
@@ -39,7 +39,7 @@ class Login extends Component {
       {
         ID: 3,
         EMPLOYER_ID: 1,
-        TITLE: "JOB 3",
+        TITLE: "DUMMY JOB 3",
         DESCRIPTION: "JOB 3 DESCRIPTION",
         SKILLS: "SKILLS",
         EXPERIENCE: "EXP",
@@ -57,7 +57,11 @@ class Login extends Component {
     this.fetchjob = this.fetchjob.bind(this);
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    axios.defaults.headers.common["Authorization"] = sessionStorage.getItem(
+      "AUTH_TOKEN"
+    );
+  }
 
   componentDidMount() {
     this.fetchjob();
@@ -67,7 +71,6 @@ class Login extends Component {
     axios
       .get(`${url}/job/all`)
       .then(response => {
-        console.log(response.data.message);
         this.setState({
           data: response.data.message
         });
@@ -78,11 +81,16 @@ class Login extends Component {
   };
 
   onCreateClick = () => {
-    alert("create");
+    this.props.history.push({
+      pathname: "/createjob"
+    });
   };
 
   onEditClick = row => e => {
-    alert(`edit id ${row.ID}`);
+    this.props.history.push({
+      pathname: "/createjob",
+      state: { mode: "Edit", data: row }
+    });
   };
 
   onDeleteClick = row => e => {
@@ -141,4 +149,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(JobList);
