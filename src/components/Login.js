@@ -87,9 +87,9 @@ class Login extends Component {
   render() {
     if (this.state.redirect === true) {
       if (this.state.company !== null) {
-        return <Redirect to = "/createjob" />;
+        return <Redirect to="/joblist" />;
       } else {
-        return <Redirect to = "/jobseeker" />;
+        return <Redirect to="/jobseeker" />;
       }
     } else {
       return (
