@@ -87,7 +87,7 @@ class CreateJob extends Component {
     let employer_id = decoded.ID;
     let method;
     let callingURL;
-    if(this.state.operation === "Edit") {
+    if (this.state.operation === "Edit") {
       callingURL = '/job/' + this.state.currentJobID;
       method = 'PUT';
     } else {
@@ -113,7 +113,8 @@ class CreateJob extends Component {
       });
 
       let responsejson = await response.json();
-      if(responsejson.status === "Success") {
+      if (responsejson.status === "Success") {
+        alert("Job Posting " + this.state.operation + " successful");
         this.props.history.push("/joblist");
       }
     })();

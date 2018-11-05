@@ -12,45 +12,18 @@ import { Styles } from "../styles/js/Styles";
 import JobListTable from "./JobListTable";
 import { ACTION_BACKEND_URL } from "../utils/Constants";
 
+import { Redirect } from "react-router-dom";
+
 class JobList extends Component {
   constructor(props) {
     super(props);
 
     this.data = [
-      {
-        ID: 1,
-        EMPLOYER_ID: 1,
-        TITLE: "DUMMY JOB 1",
-        DESCRIPTION: "JOB 1 DESCRIPTION",
-        SKILLS: "SKILLS",
-        EXPERIENCE: "EXP",
-        LOCATION: "LOCATION",
-        SALARY_RANGE: "1000 - 2000"
-      },
-      {
-        ID: 2,
-        EMPLOYER_ID: 1,
-        TITLE: "DUMMY JOB 2",
-        DESCRIPTION: "JOB 2 DESCRIPTION",
-        SKILLS: "SKILLS",
-        EXPERIENCE: "EXP",
-        LOCATION: "LOCATION",
-        SALARY_RANGE: "1000 - 2000"
-      },
-      {
-        ID: 3,
-        EMPLOYER_ID: 1,
-        TITLE: "DUMMY JOB 3",
-        DESCRIPTION: "JOB 3 DESCRIPTION",
-        SKILLS: "SKILLS",
-        EXPERIENCE: "EXP",
-        LOCATION: "LOCATION",
-        SALARY_RANGE: "1000 - 2000"
-      }
     ];
 
-    this.state = { 
-      data: this.data
+    this.state = {
+      data: this.data,
+      redirect: false,
     };
 
     this.onCreateClick = this.onCreateClick.bind(this);
@@ -64,6 +37,16 @@ class JobList extends Component {
     axios.defaults.headers.common["Authorization"] = sessionStorage.getItem(
       "AUTH_TOKEN"
     );
+
+    let token = sessionStorage.getItem("AUTH_TOKEN");
+    let company = sessionStorage.getItem("COMPANY");
+
+    console.log(token);
+    console.log(company);
+    if (token && company !== "null") {
+      this.setState({ redirect: true });
+    }
+
   }
 
   componentDidMount() {
@@ -125,31 +108,39 @@ class JobList extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <div className={"col-12 " + css(Styles.div)}>
-          <div className={css(Styles.Panel2, Styles.white)}>
-            <div>
-              <h1> Job List <Button
-                className={css(Styles.buttonMarginRight)}
-                variant="contained"
-                color="primary"
-                style={{ marginBottom: 10 }}
-                onClick={this.onCreateClick}
-              >
-                Create
+
+    if (this.state.redirect === false) {
+
+      return <Redirect to="/" />;
+    }
+    else {
+
+      return (
+        <div>
+          <div className={"col-12 " + css(Styles.div)}>
+            <div className={css(Styles.Panel2, Styles.white)}>
+              <div>
+                <h1> Job List <Button
+                  className={css(Styles.buttonMarginRight)}
+                  variant="contained"
+                  color="primary"
+                  style={{ marginBottom: 10 }}
+                  onClick={this.onCreateClick}
+                >
+                  Create
               </Button></h1>
-              
-              <JobListTable
-                data={this.state.data}
-                onEditClick={this.onEditClick}
-                onDeleteClick={this.onDeleteClick}
-              />
+
+                <JobListTable
+                  data={this.state.data}
+                  onEditClick={this.onEditClick}
+                  onDeleteClick={this.onDeleteClick}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
