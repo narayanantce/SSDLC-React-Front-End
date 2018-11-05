@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { css } from "aphrodite";
 import { Redirect } from "react-router-dom";
+import shajs from 'sha.js';
 
 import { Styles } from "../styles/js/Styles";
 import { ACTION_BACKEND_URL } from "../utils/Constants";
@@ -27,12 +28,11 @@ class Login extends Component {
   }
 
   login(e) {
+    e.preventDefault();
+
     (async () => {
 
       let validateEmail = (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(String(this.state.email).toLowerCase()));
-
-      //var bcrypt = require('bcryptjs');
-      //var hash = bcrypt.hashSync(this.state.password, 8);
 
       if (validateEmail && this.state.password !== "") {
         e.preventDefault();
@@ -44,7 +44,7 @@ class Login extends Component {
           },
           body: JSON.stringify({
             email: this.state.email,
-            password: this.state.password
+            password: shajs('sha512').update(this.state.password).digest('hex')
           })
         });
 
@@ -95,8 +95,10 @@ class Login extends Component {
       return (
         <div className={"col-12 " + css(Styles.div)}>
           <div className={css(Styles.Panel, Styles.white)}>
-            <h1 className={""}> Log In </h1>
-            <span className={this.state.formError}> {this.state.error} </span>
+            <center>
+              <h1> Login </h1>
+              <span className={this.state.formError}> {this.state.error} </span>
+            </center>
             <form
               onSubmit={this.login}
               className={"col-md-12 " + css(Styles.form)}
