@@ -51,7 +51,6 @@ class Login extends Component {
         let responsejson = await response.json();
 
         if (response.status === 200) {
-          // let userid = responsejson.user.ID;
           let token = responsejson.token;
 
           sessionStorage.setItem("AUTH_TOKEN", "Bearer " + token);

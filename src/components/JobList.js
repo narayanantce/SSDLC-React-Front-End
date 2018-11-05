@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { css } from "aphrodite";
+import jwtDecode from "jwt-decode";
 
 import { confirmAlert } from "react-confirm-alert";
 import { withRouter } from "react-router";
@@ -54,8 +55,13 @@ class JobList extends Component {
   }
 
   fetchjob = () => {
+
+    let token = sessionStorage.getItem("AUTH_TOKEN");
+    let decoded = jwtDecode(token);
+    let employerID = decoded.ID;
+
     axios
-      .get(`${ACTION_BACKEND_URL}/job/all`)
+      .get(`${ACTION_BACKEND_URL}/job/${employerID}`)
       .then(response => {
         this.setState({
           data: response.data.message
