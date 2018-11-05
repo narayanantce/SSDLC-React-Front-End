@@ -102,19 +102,20 @@ class CreateJob extends Component {
           Authorization: token,
           "Content-Type": "application/json"
         },
-        body: {
+        body: JSON.stringify({
           employer_id: employer_id,
           title: this.state.title,
           description: this.state.description,
-          skills: this.state.skills_selected,
+          skills: this.state.skills_selected.value,
           experience: this.state.experience,
           location: this.state.location,
           salary_range: this.state.salaryRange
-        }
+        })
       });
 
       let responsejson = await response.json();
       console.log(responsejson);
+
     })();
   }
 
