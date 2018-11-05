@@ -60,25 +60,15 @@ class Login extends Component {
 
           this.setState({ company: responsejson.user.COMPANY });
           this.setState({ redirect: true });
-        } else if (response.status === 500) {
-          e.preventDefault();
-
-          this.setState({ error: "Internal Server Error" });
-          this.setState({ formError: css(Styles.formError) });
-        } else if (response.status === 403) {
-          e.preventDefault();
-
-          this.setState({ error: "Access Denied" });
-          this.setState({ formError: css(Styles.formError) });
         } else {
           e.preventDefault();
-          this.setState({ error: "Invalid user credentials" });
+          this.setState({ error: "Login failed : Invalid user credentials" });
           this.setState({ formError: css(Styles.formError) });
         }
       } else {
         e.preventDefault();
         this.setState({ formError: css(Styles.formError) });
-        this.setState({ error: "Invalid email/password" });
+        this.setState({ error: "Login failed : Invalid email/password" });
       }
     })();
   }
