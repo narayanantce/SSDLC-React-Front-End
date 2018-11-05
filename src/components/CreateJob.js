@@ -57,14 +57,18 @@ class CreateJob extends Component {
     this.setState({ skills: SKILLS });
     if (this.props.history.location.state !== undefined) {
       const { state } = this.props.history.location;
+
       if (state.mode !== undefined) {
         this.setState({
           operation: state.mode,
           description: state.data.DESCRIPTION,
-          skills_selected: state.data.SKILL,
+          skills_selected: {
+            label: state.data.SKILLS,
+            value: state.data.SKILLS
+          },
           experience: state.data.EXPERIENCE,
           location: state.data.LOCATION,
-          salaryRange: state.data.SALARYRANGE,
+          salaryRange: state.data.SALARY_RANGE,
           title: state.data.TITLE
         });
       }
@@ -73,18 +77,11 @@ class CreateJob extends Component {
     } else {
       this.setState({ operation: "Create" });
     }
-    let skills_selected_json = {
-      label: this.props.skills_selected,
-      value: this.props.skills_selected
-    };
 
-    this.setState({ skills_selected: skills_selected_json });
-    console.log(this.state);
-    console.log(sessionStorage);
   }
 
   submitJob(e) {
-    console.log(this.state);
+
     e.preventDefault();
     let token = sessionStorage.getItem("AUTH_TOKEN");
 
