@@ -28,18 +28,18 @@ class JobSeeker extends Component {
             return (
                 <Redirect to="/" />
             )
-        }
-        else {
-
+        } else {
             return (
 
                 <div className={"col-12 " + css(Styles.div)}>
                     <div className={css(Styles.Panel, Styles.white)}>
-                        <h1 className={""}> {this.state.operation} Job Seeker screen </h1>
+                        <center>
+                            <h1> Job Seeker Screen </h1>
+                            <img src="//www.glassdoor.com/blog/app/uploads/sites/13/hire-me-sign.jpg" alt="Hire me" width="425" height="383"></img>
+                        </center>
                     </div>
                 </div>
             );
-
         }
     }
 }

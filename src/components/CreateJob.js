@@ -24,7 +24,8 @@ class CreateJob extends Component {
       title: "",
       operation: "",
       userid: "",
-      redirect: false
+      redirect: false,
+      currentJobID: null
     };
 
     this.handleSkillChange = this.handleSkillChange.bind(this);
@@ -48,7 +49,6 @@ class CreateJob extends Component {
     console.log(token);
     console.log(company);
     if (token && company !== "null") {
-      //alert("Setting redirect to true");
       this.setState({ redirect: true });
     }
   }
@@ -57,10 +57,10 @@ class CreateJob extends Component {
     this.setState({ skills: SKILLS });
     if (this.props.history.location.state !== undefined) {
       const { state } = this.props.history.location;
-
       if (state.mode !== undefined) {
         this.setState({
           operation: state.mode,
+          currentJobID: state.data.ID,
           description: state.data.DESCRIPTION,
           skills_selected: {
             label: state.data.SKILLS,
@@ -77,24 +77,26 @@ class CreateJob extends Component {
     } else {
       this.setState({ operation: "Create" });
     }
-
   }
 
   submitJob(e) {
 
     e.preventDefault();
     let token = sessionStorage.getItem("AUTH_TOKEN");
-
-    var decoded = jwtDecode(token);
-    console.log(decoded.ID);
-    console.log(token);
+    let decoded = jwtDecode(token);
     let employer_id = decoded.ID;
-
-    console.log(this.state);
-    console.log(employer_id);
+    let method;
+    let callingURL;
+    if(this.state.operation === "Edit") {
+      callingURL = '/job/' + this.state.currentJobID;
+      method = 'PUT';
+    } else {
+      callingURL = '/job/add';
+      method = 'POST';
+    }
     (async () => {
-      const response = await fetch(ACTION_BACKEND_URL + "/job/add", {
-        method: "POST",
+      const response = await fetch(ACTION_BACKEND_URL + callingURL, {
+        method,
         headers: {
           Authorization: token,
           "Content-Type": "application/json"
@@ -111,13 +113,13 @@ class CreateJob extends Component {
       });
 
       let responsejson = await response.json();
-      console.log(responsejson);
-
+      if(responsejson.status === "Success") {
+        this.props.history.push("/joblist");
+      }
     })();
   }
 
   render() {
-    console.log(this.state);
 
     if (this.state.redirect === false) {
       return <Redirect to="/" />;
@@ -125,8 +127,10 @@ class CreateJob extends Component {
       return (
         <div className={"col-12 " + css(Styles.div)}>
           <div className={css(Styles.Panel, Styles.white)}>
-            <h1 className={""}> {this.state.operation} Job Posting </h1>
-            <span className={this.state.formError}> {this.state.error} </span>
+            <center>
+              <h1> {this.state.operation} Job Posting </h1>
+              <span className={this.state.formError}> {this.state.error} </span>
+            </center>
             <form
               onSubmit={this.submitJob}
               className={"col-md-12 " + css(Styles.form)}

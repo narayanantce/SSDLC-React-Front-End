@@ -26,10 +26,8 @@ class App extends Component {
                 />
               )}
             />
-            }
             <Route exact path = "/jobseeker" component = { JobSeeker } />
             <Route exact path = "/joblist/" component = { JobList } />
-            {/* <Route exact path = "/" render={props => <CreateJob operation='Edit' skills_selected='ITES' description='hello' title='Software Engr' experience='2' location='Chennai' salaryRange='4000-5000' />}/>} */}
           </div>
         </div>
       </Router>

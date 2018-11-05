@@ -49,7 +49,9 @@ class JobList extends Component {
       }
     ];
 
-    this.state = { data: this.data };
+    this.state = { 
+      data: this.data
+    };
 
     this.onCreateClick = this.onCreateClick.bind(this);
     this.onDeleteClick = this.onDeleteClick.bind(this);
@@ -127,16 +129,17 @@ class JobList extends Component {
       <div>
         <div className={"col-12 " + css(Styles.div)}>
           <div className={css(Styles.Panel2, Styles.white)}>
-            <h1 className={""}> Job List </h1>
             <div>
-              <Button
+              <h1> Job List <Button
+                className={css(Styles.buttonMarginRight)}
                 variant="contained"
                 color="primary"
                 style={{ marginBottom: 10 }}
                 onClick={this.onCreateClick}
               >
                 Create
-              </Button>
+              </Button></h1>
+              
               <JobListTable
                 data={this.state.data}
                 onEditClick={this.onEditClick}

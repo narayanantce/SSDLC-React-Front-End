@@ -85,6 +85,10 @@ const Styles = StyleSheet.create({
     float: "left",
     left: "10px",
     top: "-20px"
+  },
+
+  buttonMarginRight: {
+    marginLeft: "680px"
   }
 });
 
