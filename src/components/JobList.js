@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { css } from "aphrodite";
+
 import { confirmAlert } from "react-confirm-alert";
 import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
+
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-import { Styles } from "./Styles";
+import { Styles } from "../styles/js/Styles";
 import JobListTable from "./JobListTable";
-
-const url = "http://localhost:7007";
+import { ACTION_BACKEND_URL } from "../utils/Constants";
 
 class JobList extends Component {
   constructor(props) {
@@ -69,7 +70,7 @@ class JobList extends Component {
 
   fetchjob = () => {
     axios
-      .get(`${url}/job/all`)
+      .get(`${ACTION_BACKEND_URL}/job/all`)
       .then(response => {
         this.setState({
           data: response.data.message
@@ -114,7 +115,7 @@ class JobList extends Component {
 
   onDelete = row => {
     axios
-      .delete(`${url}/job/${row.ID}`)
+      .delete(`${ACTION_BACKEND_URL}/job/${row.ID}`)
       .then(res => {
         this.fetchjob();
       })

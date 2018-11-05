@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Styles } from "./Styles";
-import { URL } from "./Constants";
-
 import { css } from "aphrodite";
 import { Redirect } from "react-router-dom";
+
+import { Styles } from "../styles/js/Styles";
+import { ACTION_BACKEND_URL } from "../utils/Constants";
 
 class Login extends Component {
   constructor(props) {
@@ -28,18 +28,16 @@ class Login extends Component {
 
   login(e) {
     (async () => {
-      const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-      let validateEmail = emailRegex.test(
-        String(this.state.email).toLowerCase()
-      );
+
+      let validateEmail = (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(String(this.state.email).toLowerCase()));
 
       //var bcrypt = require('bcryptjs');
       //var hash = bcrypt.hashSync(this.state.password, 8);
 
-      if (validateEmail && this.state.password != "") {
+      if (validateEmail && this.state.password !== "") {
         e.preventDefault();
 
-        const response = await fetch(URL + "/auth/login", {
+        const response = await fetch(ACTION_BACKEND_URL + "/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -52,8 +50,8 @@ class Login extends Component {
 
         let responsejson = await response.json();
 
-        if (response.status == 200) {
-          let userid = responsejson.user.ID;
+        if (response.status === 200) {
+          // let userid = responsejson.user.ID;
           let token = responsejson.token;
 
           sessionStorage.setItem("AUTH_TOKEN", "Bearer " + token);
@@ -63,12 +61,12 @@ class Login extends Component {
 
           this.setState({ company: responsejson.user.COMPANY });
           this.setState({ redirect: true });
-        } else if (response.status == 500) {
+        } else if (response.status === 500) {
           e.preventDefault();
 
           this.setState({ error: "Internal Server Error" });
           this.setState({ formError: css(Styles.formError) });
-        } else if (response.status == 403) {
+        } else if (response.status === 403) {
           e.preventDefault();
 
           this.setState({ error: "Access Denied" });
@@ -88,10 +86,10 @@ class Login extends Component {
 
   render() {
     if (this.state.redirect === true) {
-      if (this.state.company != null) {
-        return <Redirect to="/createjob" />;
+      if (this.state.company !== null) {
+        return <Redirect to = "/createjob" />;
       } else {
-        return <Redirect to="/jobseeker" />;
+        return <Redirect to = "/jobseeker" />;
       }
     } else {
       return (

@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import { Styles } from "./Styles";
-import { URL } from "./Constants";
-import Select from "react-select";
-import { SKILLS } from "./Dropdowns";
 import { withRouter } from "react-router";
-import { css } from "aphrodite";
+import Select from "react-select";
 import { Redirect } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import { css } from "aphrodite";
+
+import { Styles } from "../styles/js/Styles";
+import { ACTION_BACKEND_URL } from "../utils/Constants";
+import { SKILLS } from "../utils/Dropdowns";
 
 class CreateJob extends Component {
+
   constructor(props) {
     super(props);
 
@@ -45,7 +47,7 @@ class CreateJob extends Component {
 
     console.log(token);
     console.log(company);
-    if (token && company != "null") {
+    if (token && company !== "null") {
       //alert("Setting redirect to true");
       this.setState({ redirect: true });
     }
@@ -66,7 +68,7 @@ class CreateJob extends Component {
           title: state.data.TITLE
         });
       }
-    } else if (this.props.operation != undefined) {
+    } else if (this.props.operation !== undefined) {
       this.setState({ operation: this.props.operation });
     } else {
       this.setState({ operation: "Create" });
@@ -94,7 +96,7 @@ class CreateJob extends Component {
     console.log(this.state);
     console.log(employer_id);
     (async () => {
-      const response = await fetch(URL + "/job/add", {
+      const response = await fetch(ACTION_BACKEND_URL + "/job/add", {
         method: "POST",
         headers: {
           Authorization: token,

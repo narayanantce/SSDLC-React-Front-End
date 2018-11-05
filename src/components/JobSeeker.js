@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import {Styles} from './Styles'
+import { Redirect } from "react-router-dom";
+import { css } from "aphrodite";
 
-import {css} from "aphrodite";
-import {Redirect} from "react-router-dom";
+import { Styles } from '../styles/js/Styles';
 
 class JobSeeker extends Component {
 
@@ -17,11 +17,10 @@ class JobSeeker extends Component {
     componentWillMount() {
         let token = sessionStorage.getItem('AUTH_TOKEN'); 
         console.log(token);
-        if(token != undefined) {
+        if(token !== undefined) {
             this.setState({redirect:true})   
         }
     }
-
 
     render() {
 
