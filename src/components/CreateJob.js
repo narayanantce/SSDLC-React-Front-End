@@ -82,14 +82,12 @@ class CreateJob extends Component {
   }
 
   back() {
-    alert("Inside back");
     this.setState({ back: true });
   }
 
   submitJob(e) {
 
     e.preventDefault();
-    console.log(this.state);
 
     let errors = false;
 
@@ -113,23 +111,20 @@ class CreateJob extends Component {
     }
 
     if (errors == false && this.state.salaryRange != '') {
-      console.log("inside else");
       var salaries = this.state.salaryRange.split("-");
 
-      console.log(salaries);
-      console.log(this.state);
       let salaryFrom = numberRegex.test(salaries[0]);
       let salaryTo = numberRegex.test(salaries[1]);
-      console.log(salaryFrom);
-      console.log(salaryTo);
+
       if (!salaryFrom || !salaryTo) {
         this.setState({ formError: css(Styles.formError) });
         this.setState({ error: "Please enter the salary range in valid format eg. 4000-5000" });
         errors = true;
       }
+
     }
 
-    else if (errors == false) {
+    if (errors == false) {
 
       let token = sessionStorage.getItem("AUTH_TOKEN");
       let decoded = jwtDecode(token);
