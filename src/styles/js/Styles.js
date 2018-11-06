@@ -88,12 +88,18 @@ const Styles = StyleSheet.create({
   },
 
   buttonMarginRight: {
-    marginLeft: "630px"
+    marginLeft: "570px",
+    marginRight: "15px"
+  }, 
+
+  buttonMarginLeft: {
+    marginLeft: "65px"
   },
 
-  buttonMarginRightLogout: {
-    marginLeft: "680px"
+  buttonMarginLeftLogout: {
+    marginLeft: "135px"
   }
+
 });
 
 export { Styles };

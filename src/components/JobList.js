@@ -141,18 +141,6 @@ class JobList extends Component {
 
               <div>
 
-
-                <h1><Button
-                  className={css(Styles.buttonMarginRightLogout)}
-                  variant="contained"
-                  color="primary"
-                  style={{ marginBottom: 10 }}
-                  onClick={this.logOut}
-                >
-
-                  LogOut
-              </Button></h1>
-
                 <h1> Job List <Button
                   className={css(Styles.buttonMarginRight)}
                   variant="contained"
@@ -162,6 +150,16 @@ class JobList extends Component {
                 >
 
                   Create
+              </Button>
+
+              <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ marginBottom: 10 }}
+                  onClick={this.logOut}
+                >
+
+                  LogOut
               </Button></h1>
 
                 <JobListTable
@@ -169,6 +167,7 @@ class JobList extends Component {
                   onEditClick={this.onEditClick}
                   onDeleteClick={this.onDeleteClick}
                 />
+                
               </div>
             </div>
           </div>

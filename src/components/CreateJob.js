@@ -193,17 +193,22 @@ class CreateJob extends Component {
         <div className={"col-12 " + css(Styles.div)}>
           <div className={css(Styles.Panel, Styles.white)}>
 
-
-            <button className={"col-md-1 " + css(Styles.button)} onClick={this.logOut}>
-              {" "}
-              LogOut
-              </button>
-
-            <br /><br />
-            <button className={"col-md-1 " + css(Styles.button)} onClick={this.back}>
-              {" "}
-              Back
-              </button>
+            <table>
+              <tr>
+                <td>
+                <button className={"col-md-1 " + css(Styles.button) + " " + css(Styles.buttonMarginLeft)} onClick={this.back}>
+                  {" "}
+                  Back
+                  </button>
+                </td>
+                <td>
+                <button className={"col-md-1 " + css(Styles.button) + " " + css(Styles.buttonMarginLeft)} onClick={this.logOut}>
+                  {" "}
+                  Logout
+                  </button>
+                </td>
+              </tr>
+            </table>            
 
             <center>
               <h1> {this.state.operation} Job Posting </h1>

@@ -45,10 +45,8 @@ class JobSeeker extends Component {
 
                 <div className={"col-12 " + css(Styles.div)}>
                     <div className={css(Styles.Panel, Styles.white)}>
-
-                        <button className={"col-md-1 " + css(Styles.button)} onClick={this.logOut}>
-                            {" "}
-                            LogOut
+                        <button className={css(Styles.button) + " " + css(Styles.buttonMarginLeftLogout)} onClick={this.logOut}>
+                            Logout
                         </button>
                         <center>
                             <h1> Job Seeker Screen </h1>
