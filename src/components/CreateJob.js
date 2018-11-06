@@ -39,7 +39,7 @@ class CreateJob extends Component {
 
   handleSkillChange = skills_selected => {
     this.setState({ skills_selected });
-    console.log(this.state);
+
   };
 
   onChange = e => {
@@ -50,8 +50,6 @@ class CreateJob extends Component {
     let token = sessionStorage.getItem("AUTH_TOKEN");
     let company = sessionStorage.getItem("COMPANY");
 
-    console.log(token);
-    console.log(company);
     if (token && company !== "null") {
       this.setState({ redirect: true });
     }
