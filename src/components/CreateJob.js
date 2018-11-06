@@ -6,7 +6,7 @@ import jwtDecode from "jwt-decode";
 import { css } from "aphrodite";
 
 import { Styles } from "../styles/js/Styles";
-import { ACTION_BACKEND_URL } from "../utils/Constants";
+import { ACTION_BACKEND_URL, numberRegex } from "../utils/Constants";
 import { SKILLS } from "../utils/Dropdowns";
 
 class CreateJob extends Component {
@@ -25,12 +25,16 @@ class CreateJob extends Component {
       operation: "",
       userid: "",
       redirect: false,
-      currentJobID: null
+      currentJobID: null,
+      formError: "hidden",
+      error: "",
+      back: false,
     };
 
     this.handleSkillChange = this.handleSkillChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this.submitJob = this.submitJob.bind(this);
+    this.back = this.back.bind(this);
   }
 
   handleSkillChange = skills_selected => {
@@ -79,59 +83,117 @@ class CreateJob extends Component {
     }
   }
 
+  back() {
+    alert("Inside back");
+    this.setState({ back: true });
+  }
+
   submitJob(e) {
 
     e.preventDefault();
-    let token = sessionStorage.getItem("AUTH_TOKEN");
-    let decoded = jwtDecode(token);
-    let employer_id = decoded.ID;
-    let method;
-    let callingURL;
-    if (this.state.operation === "Edit") {
-      callingURL = '/job/' + this.state.currentJobID;
-      method = 'PUT';
-    } else {
-      callingURL = '/job/add';
-      method = 'POST';
-    }
-    (async () => {
-      const response = await fetch(ACTION_BACKEND_URL + callingURL, {
-        method,
-        headers: {
-          Authorization: token,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          employer_id: employer_id,
-          title: this.state.title,
-          description: this.state.description,
-          skills: this.state.skills_selected.value,
-          experience: this.state.experience,
-          location: this.state.location,
-          salary_range: this.state.salaryRange
-        })
-      });
+    console.log(this.state);
 
-      let responsejson = await response.json();
-      if (responsejson.status === "Success") {
-        alert("Job Posting " + this.state.operation + " successful");
-        this.props.history.push("/joblist");
+    let errors = false;
+
+    this.setState({ formError: 'hidden' });
+    this.setState({ error: "" });
+
+    if (this.state.title == '' || this.state.skills_selected == '' || this.state.location == '') {
+      this.setState({ formError: css(Styles.formError) });
+      this.setState({ error: "Title/Skills/Location is missing" })
+      errors = true;
+    }
+
+    else if (this.state.experience != '') {
+      let validateExperience = numberRegex.test(this.state.experience);
+
+      if (!validateExperience) {
+        this.setState({ formError: css(Styles.formError) });
+        this.setState({ error: "Please enter valid value for Experience" })
+        errors = true;
       }
-    })();
+    }
+
+    if (errors == false && this.state.salaryRange != '') {
+      console.log("inside else");
+      var salaries = this.state.salaryRange.split("-");
+
+      console.log(salaries);
+      console.log(this.state);
+      let salaryFrom = numberRegex.test(salaries[0]);
+      let salaryTo = numberRegex.test(salaries[1]);
+      console.log(salaryFrom);
+      console.log(salaryTo);
+      if (!salaryFrom || !salaryTo) {
+        this.setState({ formError: css(Styles.formError) });
+        this.setState({ error: "Please enter the salary range in valid format eg. 4000-5000" });
+        errors = true;
+      }
+    }
+
+    else if (errors == false) {
+
+      let token = sessionStorage.getItem("AUTH_TOKEN");
+      let decoded = jwtDecode(token);
+      let employer_id = decoded.ID;
+      let method;
+      let callingURL;
+      if (this.state.operation === "Edit") {
+        callingURL = '/job/' + this.state.currentJobID;
+        method = 'PUT';
+      } else {
+        callingURL = '/job/add';
+        method = 'POST';
+      }
+      (async () => {
+        const response = await fetch(ACTION_BACKEND_URL + callingURL, {
+          method,
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            employer_id: employer_id,
+            title: this.state.title,
+            description: this.state.description,
+            skills: this.state.skills_selected.value,
+            experience: this.state.experience,
+            location: this.state.location,
+            salary_range: this.state.salaryRange
+          })
+        });
+
+        let responsejson = await response.json();
+        if (responsejson.status === "Success") {
+          alert("Job Posting " + this.state.operation + " successful");
+          this.props.history.push("/joblist");
+        }
+      })();
+    }
   }
 
   render() {
 
+    if (this.state.back === true) {
+
+      return <Redirect to="/joblist" />;
+    }
     if (this.state.redirect === false) {
       return <Redirect to="/" />;
     } else {
       return (
         <div className={"col-12 " + css(Styles.div)}>
           <div className={css(Styles.Panel, Styles.white)}>
+
+            <button className={"col-md-1 " + css(Styles.button)} onClick={this.back}>
+              {" "}
+              Back
+              </button>
             <center>
               <h1> {this.state.operation} Job Posting </h1>
-              <span className={this.state.formError}> {this.state.error} </span>
+
             </center>
+
             <form
               onSubmit={this.submitJob}
               className={"col-md-12 " + css(Styles.form)}
@@ -201,6 +263,13 @@ class CreateJob extends Component {
                 {this.state.operation} Job{" "}
               </button>
             </form>
+
+            <br /><br />
+            <div className="row justify-content-center">
+
+              <span className={this.state.formError}>{this.state.error}</span>
+
+            </div>
           </div>
         </div>
       );
