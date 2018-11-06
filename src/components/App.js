@@ -29,7 +29,7 @@ class App extends Component {
             />
             <Route exact path="/jobseeker" component={JobSeeker} />
             <Route exact path="/joblist/" component={JobList} />
-            <Redirect from='*' to='/' />
+
           </div>
         </div>
       </Router>

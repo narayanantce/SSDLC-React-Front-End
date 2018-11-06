@@ -32,18 +32,17 @@ class JobList extends Component {
     this.onDelete = this.onDelete.bind(this);
     this.onEditClick = this.onEditClick.bind(this);
     this.fetchjob = this.fetchjob.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   componentWillMount() {
-    axios.defaults.headers.common["Authorization"] = sessionStorage.getItem(
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "AUTH_TOKEN"
     );
 
-    let token = sessionStorage.getItem("AUTH_TOKEN");
-    let company = sessionStorage.getItem("COMPANY");
+    let token = localStorage.getItem("AUTH_TOKEN");
+    let company = localStorage.getItem("COMPANY");
 
-    console.log(token);
-    console.log(company);
     if (token && company !== "null") {
       this.setState({ redirect: true });
     }
@@ -56,7 +55,7 @@ class JobList extends Component {
 
   fetchjob = () => {
 
-    let token = sessionStorage.getItem("AUTH_TOKEN");
+    let token = localStorage.getItem("AUTH_TOKEN");
     let decoded = jwtDecode(token);
     let employerID = decoded.ID;
 
@@ -88,7 +87,7 @@ class JobList extends Component {
   onDeleteClick = row => e => {
     confirmAlert({
       title: "Confirm to Delete",
-      message: `Are you sure to do this job. (Job ID = ${row.ID})`,
+      message: `Are you sure to delete this job posting?`,
       buttons: [
         {
           label: "Yes",
@@ -109,8 +108,21 @@ class JobList extends Component {
       .delete(`${ACTION_BACKEND_URL}/job/${row.ID}`)
       .then(res => {
         this.fetchjob();
+
       })
       .catch(err => console.log(err));
+
+  };
+
+  logOut = () => {
+    localStorage.clear();
+
+    alert("Logged out successfully");
+
+    this.props.history.push({
+      pathname: "/"
+    });
+
   };
 
   render() {
@@ -124,8 +136,23 @@ class JobList extends Component {
       return (
         <div>
           <div className={"col-12 " + css(Styles.div)}>
+
             <div className={css(Styles.Panel2, Styles.white)}>
+
               <div>
+
+
+                <h1><Button
+                  className={css(Styles.buttonMarginRightLogout)}
+                  variant="contained"
+                  color="primary"
+                  style={{ marginBottom: 10 }}
+                  onClick={this.logOut}
+                >
+
+                  LogOut
+              </Button></h1>
+
                 <h1> Job List <Button
                   className={css(Styles.buttonMarginRight)}
                   variant="contained"
@@ -133,6 +160,7 @@ class JobList extends Component {
                   style={{ marginBottom: 10 }}
                   onClick={this.onCreateClick}
                 >
+
                   Create
               </Button></h1>
 
@@ -144,7 +172,7 @@ class JobList extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div >
       );
     }
   }

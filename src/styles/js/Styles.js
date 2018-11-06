@@ -58,7 +58,7 @@ const Styles = StyleSheet.create({
 
   button: {
     height: "30px",
-    width: "60%",
+    width: "40%",
     position: "relative",
     backgroundColor: "#01BFB3",
     color: "#ffffff !important",
@@ -88,6 +88,10 @@ const Styles = StyleSheet.create({
   },
 
   buttonMarginRight: {
+    marginLeft: "630px"
+  },
+
+  buttonMarginRightLogout: {
     marginLeft: "680px"
   }
 });

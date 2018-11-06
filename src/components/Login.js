@@ -53,8 +53,8 @@ class Login extends Component {
         if (response.status === 200) {
           let token = responsejson.token;
 
-          sessionStorage.setItem("AUTH_TOKEN", "Bearer " + token);
-          sessionStorage.setItem("COMPANY", responsejson.user.COMPANY);
+          localStorage.setItem("AUTH_TOKEN", "Bearer " + token);
+          localStorage.setItem("COMPANY", responsejson.user.COMPANY);
 
           alert("Logged In successfully");
 
@@ -74,6 +74,17 @@ class Login extends Component {
   }
 
   render() {
+
+    let token = localStorage.getItem("AUTH_TOKEN");
+    let company = localStorage.getItem("COMPANY");
+
+    if (token && company !== "null") {
+      return <Redirect to="/joblist" />;
+    }
+    else if (token && company == "null") {
+      return <Redirect to="/jobseeker" />;
+    }
+
     if (this.state.redirect === true) {
       if (this.state.company !== null) {
         return <Redirect to="/joblist" />;

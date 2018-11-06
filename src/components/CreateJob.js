@@ -35,6 +35,7 @@ class CreateJob extends Component {
     this.onChange = this.onChange.bind(this);
     this.submitJob = this.submitJob.bind(this);
     this.back = this.back.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   handleSkillChange = skills_selected => {
@@ -47,8 +48,8 @@ class CreateJob extends Component {
   };
 
   componentWillMount() {
-    let token = sessionStorage.getItem("AUTH_TOKEN");
-    let company = sessionStorage.getItem("COMPANY");
+    let token = localStorage.getItem("AUTH_TOKEN");
+    let company = localStorage.getItem("COMPANY");
 
     if (token && company !== "null") {
       this.setState({ redirect: true });
@@ -84,6 +85,17 @@ class CreateJob extends Component {
   back() {
     this.setState({ back: true });
   }
+
+  logOut = () => {
+    localStorage.clear();
+
+    alert("Logged out successfully");
+
+    this.props.history.push({
+      pathname: "/"
+    });
+
+  };
 
   submitJob(e) {
 
@@ -126,7 +138,7 @@ class CreateJob extends Component {
 
     if (errors == false) {
 
-      let token = sessionStorage.getItem("AUTH_TOKEN");
+      let token = localStorage.getItem("AUTH_TOKEN");
       let decoded = jwtDecode(token);
       let employer_id = decoded.ID;
       let method;
@@ -161,6 +173,9 @@ class CreateJob extends Component {
           alert("Job Posting " + this.state.operation + " successful");
           this.props.history.push("/joblist");
         }
+        else {
+          alert("Job Posting " + this.state.operation + " failed.");
+        }
       })();
     }
   }
@@ -178,10 +193,18 @@ class CreateJob extends Component {
         <div className={"col-12 " + css(Styles.div)}>
           <div className={css(Styles.Panel, Styles.white)}>
 
+
+            <button className={"col-md-1 " + css(Styles.button)} onClick={this.logOut}>
+              {" "}
+              LogOut
+              </button>
+
+            <br /><br />
             <button className={"col-md-1 " + css(Styles.button)} onClick={this.back}>
               {" "}
               Back
               </button>
+
             <center>
               <h1> {this.state.operation} Job Posting </h1>
 

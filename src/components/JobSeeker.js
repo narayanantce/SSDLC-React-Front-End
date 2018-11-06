@@ -12,15 +12,27 @@ class JobSeeker extends Component {
         this.state = {
             redirect: false,
         };
+
+        this.logOut = this.logOut.bind(this);
     }
 
     componentWillMount() {
-        let token = sessionStorage.getItem('AUTH_TOKEN');
-        console.log(token);
+        let token = localStorage.getItem('AUTH_TOKEN');
         if (token !== undefined && token != null) {
             this.setState({ redirect: true })
         }
     }
+
+    logOut = () => {
+        localStorage.clear();
+
+        alert("Logged out successfully");
+
+        this.props.history.push({
+            pathname: "/"
+        });
+
+    };
 
     render() {
 
@@ -33,6 +45,11 @@ class JobSeeker extends Component {
 
                 <div className={"col-12 " + css(Styles.div)}>
                     <div className={css(Styles.Panel, Styles.white)}>
+
+                        <button className={"col-md-1 " + css(Styles.button)} onClick={this.logOut}>
+                            {" "}
+                            LogOut
+                        </button>
                         <center>
                             <h1> Job Seeker Screen </h1>
                             <img src="//www.glassdoor.com/blog/app/uploads/sites/13/hire-me-sign.jpg" alt="Hire me" width="425" height="383"></img>
